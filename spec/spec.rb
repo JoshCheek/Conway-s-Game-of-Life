@@ -13,7 +13,7 @@ describe GameOfLife do
     context 'neigbors' do
       check_neighbors = lambda do |x,y,neighbors|
         specify do
-          subject.neighbours_at(x,y).should equal(neighbors) ,
+          subject.neighbours(x,y).should equal(neighbors) ,
             "[#{x},#{y}] should have #{neighbors} neighbours"
         end
       end

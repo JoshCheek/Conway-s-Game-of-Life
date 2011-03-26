@@ -10,11 +10,13 @@ class GameOfLife
     @cells.include? [x,y]
   end
   
-  def neighbours_at(x,y)
+  def neighbours(x,y)
     count = 0
     neighboring_cells(x,y) { |x,y| count += 1 if alive? x, y }
     count
   end
+
+private
   
   def neighboring_cells(x,y)
     [-1,0,1].each do |x_offset|
