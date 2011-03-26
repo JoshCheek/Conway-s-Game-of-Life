@@ -35,29 +35,29 @@ describe GameOfLife do
   
   
   describe '#tick!' do
-    context 'rule 1: live cells with < 2 neighbours dies' do
-      it 'dies with 0 neighbours' do
-        board = GameOfLife.new [0,0]
-        board.tick!
-        board.should_not be_alive(0,0)
-      end
-      it 'dies with 1 neighbour' do
-        board = GameOfLife.new [0,0] , [0,1]
-        board.tick!
-        board.should_not be_alive(0,0)
-      end
-    end
-    
-    context 'rule2: live cells with 2 or 3 neighbours lives' do
-      it 'lives with 2 neighbours' do
-        board = GameOfLife.new [0,0] , [0,1] , [1,0] 
-        board.tick!
-        board.should be_alive(0,0)
-      end
-      it 'lives with 3 neighbours' do
-        board = GameOfLife.new [0,0] , [0,1] , [1,0] , [1,1]
-        board.tick!
-        board.should be_alive(0,0)
+    { "Rule 1: live cells with < 2 neighbours dies" => [
+        [0 , true  , false ],
+        [1 , true  , false ],
+      ],
+      'rule2: live cells with 2 or 3 neighbours lives' => [
+        [2 , true  , true  ],
+        [3 , true  , true  ],
+      ],
+    }.each do |rule,specifications|
+      context rule do
+        specifications.each do |n,initial_alive,final_alive|
+          specify "#{initial_alive ? 'live' : 'dead'} cells with #{n} neighbours should be #{final_alive ? 'alive' : 'dead'} tomorrow." do
+            cells = [ [-1,-1] , [0,-1] , [1,-1] ,
+                      [-1, 0] ,          [1, 0] ,
+                      [-1, 1] , [0, 1] , [1, 1] ][0...n]
+            cells << [0,0] if initial_alive
+            board = GameOfLife.new(*cells)
+            board.should be_alive_at(0,0) if initial_alive
+            board.neighbours(0,0).should equal(n)
+            board.tick!
+            final_alive ? board.should(be_alive 0 , 0) : board.should_not(be_alive 0 , 0)
+          end
+        end
       end
     end
   end
