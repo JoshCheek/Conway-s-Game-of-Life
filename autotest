@@ -1,0 +1,19 @@
+#!/usr/bin/env watchr
+
+# --------------------------------------------------
+# Rules
+# --------------------------------------------------
+watch '^.*\.rb$' do
+  system    'rspec '                                     +
+            '--color '                                   +
+            '--format=documentation '                    +
+            'spec/spec.rb'
+  puts "-" * 20 + "\n\n"
+end
+
+# --------------------------------------------------
+# Signal Handling
+# --------------------------------------------------
+Signal.trap('QUIT') { ruby tests } # Ctrl-\
+Signal.trap('INT' ) { abort "\n" } # Ctrl-C
+
