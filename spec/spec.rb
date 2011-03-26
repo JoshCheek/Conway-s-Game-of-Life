@@ -39,11 +39,11 @@ describe GameOfLife do
         [0 , true  , false ],
         [1 , true  , false ],
       ],
-      'rule2: live cells with 2 or 3 neighbours lives' => [
+      'rule 2: live cells with 2 or 3 neighbours lives' => [
         [2 , true  , true  ],
         [3 , true  , true  ],
       ],
-      'rule3: live cells with more than 3 neighbours die' => (4..8).map { |n| [n,true,false] }
+      'rule 3: live cells with more than 3 neighbours die' => (4..8).map { |n| [n,true,false] },
     }.each do |rule,specifications|
       context rule do
         specifications.each do |n,initial_alive,final_alive|
