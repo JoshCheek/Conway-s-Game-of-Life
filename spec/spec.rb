@@ -22,4 +22,13 @@ describe GameOfLife do
     end
   end
   
+  context 'when initialized with a 9 cell block' do
+    subject { GameOfLife.new [0,0] , [1,0] , [2,0],
+                             [0,1] , [1,1] , [2,1],
+                             [0,2] , [1,2] , [2,2] }
+    (0...9).each do |i|
+      it { should be_alive_at(i%3 , i/3) }
+    end
+  end
+  
 end
