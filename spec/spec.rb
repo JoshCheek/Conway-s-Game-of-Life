@@ -43,6 +43,7 @@ describe GameOfLife do
         [2 , true  , true  ],
         [3 , true  , true  ],
       ],
+      'rule3: live cells with more than 3 neighbours die' => (4..8).map { |n| [n,true,false] }
     }.each do |rule,specifications|
       context rule do
         specifications.each do |n,initial_alive,final_alive|

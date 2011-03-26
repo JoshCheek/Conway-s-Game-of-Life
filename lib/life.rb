@@ -46,7 +46,9 @@ private
   
   def alive_tomorrow?(x,y)
     if alive? x , y
-      neighbours(x,y) > 1
+      return false if neighbours(x,y) < 2
+      return true  if neighbours(x,y) < 4
+      return false
     else
     end
   end
