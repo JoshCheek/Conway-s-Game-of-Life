@@ -29,7 +29,7 @@ describe GameOfLife do
     (0...9).zip([3,5,3, 5,8,5, 3,5,3]) do |i,n|
       x , y = i%3 , i/3
       it { should be_alive_at(x,y) }
-      it { [x,y].should have_n_neighbors(n) }
+      specify { [x,y].should have_n_neighbors(n) }
     end
   end
   
