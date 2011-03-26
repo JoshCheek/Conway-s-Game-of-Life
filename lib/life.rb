@@ -29,6 +29,10 @@ class GameOfLife
   def height
     40
   end
+  
+  def to_s
+    ((" " * 60 + "\n") * height).chomp
+  end
 
 private
   

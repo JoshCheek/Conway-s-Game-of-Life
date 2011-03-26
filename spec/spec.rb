@@ -64,6 +64,7 @@ describe GameOfLife do
     context 'defaults to 60x40' do
       specify { subject.width.should == 60 }
       specify { subject.height.should == 40 }
+      specify { subject.to_s.should have(61*40-1).characters }
     end
   end
   
