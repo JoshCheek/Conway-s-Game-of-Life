@@ -19,7 +19,7 @@ class GameOfLife
   def neighboring_cells(x,y)
     [-1,0,1].each do |x_offset|
       [-1,0,1].each do |y_offset|
-        next if 0 == x_offset && 0 == y_offset
+        next if x_offset.zero? && y_offset.zero?
         yield [x+x_offset, y+y_offset]
       end
     end
