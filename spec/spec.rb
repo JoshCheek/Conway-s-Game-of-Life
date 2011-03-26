@@ -33,4 +33,19 @@ describe GameOfLife do
     end
   end
   
+  
+  describe '#tick!' do
+    context 'rule 1: live cells with fewer than two live neighbours die' do
+      it 'dies with zero neighbours' do
+        board = GameOfLife.new [0,0]
+        board.tick!
+        board.should_not be_alive(0,0)
+      end
+      it 'dies with one neighbour' do
+        board = GameOfLife.new [0,0] , [0,1]
+        board.tick!
+        board.should_not be_alive(0,0)
+      end
+    end
+  end
 end

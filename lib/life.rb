@@ -15,6 +15,12 @@ class GameOfLife
     neighboring_cells(x,y) { |x,y| count += 1 if alive? x, y }
     count
   end
+  
+  def tick!
+    new_cells = Set.new
+    potential_cells { |cell| new_cells << cell if alive_tomorrow? cell }
+    @cells = new_cells
+  end
 
 private
   
@@ -27,4 +33,21 @@ private
     end
   end
   
+  def potential_cells(&block)
+    potentials = Set.new
+    @cells.each do |cell|
+      potentials << cell
+      neighboring_cells(*cell) do |adjacent_cell|
+        potentials << adjacent_cell
+      end
+    end
+    potentials.each(&block)
+  end
+  
+  def alive_tomorrow?(cell)
+  end
+  
 end
+
+
+
