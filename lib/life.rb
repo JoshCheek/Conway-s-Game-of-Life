@@ -21,6 +21,10 @@ class GameOfLife
     potential_cells { |cell| new_cells << cell if alive_tomorrow?(*cell) }
     @cells = new_cells
   end
+  
+  def width
+    60
+  end
 
 private
   

@@ -58,4 +58,12 @@ describe GameOfLife do
       end
     end
   end
+  
+  
+  describe "#bounds" do
+    context 'defaults to 60x40' do
+      specify { subject.width.should == 60 }
+    end
+  end
+  
 end
