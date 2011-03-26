@@ -13,7 +13,7 @@ RSpec::Matchers.define :be_alive_at do |x,y|
   end
   
   description do
-    "be alive at [#{x},#{y}]"
+    "[#{x},#{y}] should be alive"
   end
   
 end
