@@ -35,17 +35,11 @@ describe GameOfLife do
   
   
   describe '#tick!' do
-    { "Rule 1: live cells with < 2 neighbours dies" => [
-        [0 , true  , false ],
-        [1 , true  , false ],
-      ],
-      'rule 2: live cells with 2 or 3 neighbours lives' => [
-        [2 , true  , true  ],
-        [3 , true  , true  ],
-      ],
-      'rule 3: live cells with more than 3 neighbours die' => (4..8).map { |n| [n,true,false] },
-      'rule 4: dead cells with 3 neighbours becomes alive' => [[3,false,true]],
-      'implicit rule: dead cells without 3 neighbours stay dead' => [0,1,2,  4,5,6,7,8].map { |i| [i,false,false]},
+    { "Rule 1: live cells with < 2 neighbours dies"               => [ [0,true,false] , [1,true,false] ],
+      'rule 2: live cells with 2 or 3 neighbours lives'           => [ [2,true,true]  , [3,true,true]  ],
+      'rule 3: live cells with more than 3 neighbours die'        => (4..8).map { |n| [n,true,false] },
+      'rule 4: dead cells with 3 neighbours becomes alive'        => [[3,false,true]],
+      'implicit rule: dead cells without 3 neighbours stay dead'  => [0,1,2,  4,5,6,7,8].map { |i| [i,false,false] },
     }.each do |rule,specifications|
       context rule do
         specifications.each do |n,initial_alive,final_alive|
