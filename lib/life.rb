@@ -25,6 +25,10 @@ class GameOfLife
   def width
     60
   end
+  
+  def height
+    40
+  end
 
 private
   

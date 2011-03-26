@@ -60,9 +60,10 @@ describe GameOfLife do
   end
   
   
-  describe "#bounds" do
+  describe "bounds" do
     context 'defaults to 60x40' do
       specify { subject.width.should == 60 }
+      specify { subject.height.should == 40 }
     end
   end
   
