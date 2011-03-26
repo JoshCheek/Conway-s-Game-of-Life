@@ -1,5 +1,3 @@
-$LOADED_FEATURES << File.dirname(__FILE__) + '/../lib'
-
 RSpec::Matchers.define :be_alive_at do |x,y|
   
   match do |board|
