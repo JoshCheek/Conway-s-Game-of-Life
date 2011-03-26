@@ -50,7 +50,7 @@ private
       return true  if neighbours(x,y) < 4
       return false
     else
-      true
+      neighbours(x,y) == 3
     end
   end
   
