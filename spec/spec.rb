@@ -26,12 +26,9 @@ describe GameOfLife do
     subject { GameOfLife.new [0,0] , [1,0] , [2,0],
                              [0,1] , [1,1] , [2,1],
                              [0,2] , [1,2] , [2,2] }
-    (0...9).each do |i|
+    (0...9).zip([3,5,3, 5,8,5, 3,5,3]) do |i,n|
       x , y = i%3 , i/3
       it { should be_alive_at(x,y) }
-    end
-    (0...9).zip([3,5,3, 5,8,5, 3,5,3]).each do |i,n|
-      x , y = i%3 , i/3
       it { [x,y].should have_n_neighbors(n) }
     end
   end
