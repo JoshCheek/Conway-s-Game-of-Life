@@ -9,6 +9,7 @@ describe GameOfLife do
     specify { should_not  be_alive_at(0,1) }
     specify { should_not  be_alive_at(1,0) }
     specify { should      be_alive_at(1,1) }
+    specify { subject.neighbours_at(0,0).should == 1 }
   end
 
 end
