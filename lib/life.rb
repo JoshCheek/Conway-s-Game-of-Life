@@ -18,7 +18,7 @@ class GameOfLife
   
   def tick!
     new_cells = Set.new
-    potential_cells { |cell| new_cells << cell if alive_tomorrow? cell }
+    potential_cells { |cell| new_cells << cell if alive_tomorrow?(*cell) }
     @cells = new_cells
   end
 
@@ -44,7 +44,11 @@ private
     potentials.each(&block)
   end
   
-  def alive_tomorrow?(cell)
+  def alive_tomorrow?(x,y)
+    if alive? x , y
+      neighbours(x,y) > 1
+    else
+    end
   end
   
 end
