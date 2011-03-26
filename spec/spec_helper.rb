@@ -13,7 +13,27 @@ RSpec::Matchers.define :be_alive_at do |x,y|
   end
   
   description do
-    "[#{x},#{y}] should be alive"
+    "be alive at [#{x},#{y}]"
+  end
+  
+end
+
+
+RSpec::Matchers.define :have_n_neighbors do |expected|
+  
+  x = y = observed = nil
+  
+  match do |new_x,new_y|
+    x , y , observed = new_x , new_y , subject.neighbours(new_x,new_y)
+    expected == observed
+  end  
+  
+  failure_message_for_should do
+    "expected [#{x},#{y}] to have #{expected} neighbors, got #{observed.inspect}"
+  end
+    
+  description do
+    "have #{expected} neighbors at [#{x},#{y}]"
   end
   
 end

@@ -11,20 +11,14 @@ describe GameOfLife do
     it      { should      be_alive_at(1,1) }
     
     context 'neigbours' do
-      check_neighbours = lambda do |x,y,neighbours|
-        specify do
-          subject.neighbours(x,y).should equal(neighbours) ,
-            "[#{x},#{y}] should have #{neighbours} neighbours"
-        end
-      end
-      check_neighbours.call  -2,-2 , 0
-      check_neighbours.call  -1,-1 , 1
-      check_neighbours.call   0,0  , 1
-      check_neighbours.call   1,1  , 1
-      check_neighbours.call   0,1  , 2
-      check_neighbours.call   1,0  , 2
-      check_neighbours.call  10,0  , 0
-      check_neighbours.call   0,10 , 0
+      specify { [-2,-2].should have_n_neighbors(0) }
+      specify { [-1,-1].should have_n_neighbors(1) }
+      specify { [ 0,0 ].should have_n_neighbors(1) }
+      specify { [ 1,1 ].should have_n_neighbors(1) }
+      specify { [ 0,1 ].should have_n_neighbors(2) }
+      specify { [ 1,0 ].should have_n_neighbors(2) }
+      specify { [10,0 ].should have_n_neighbors(0) }
+      specify { [ 0,10].should have_n_neighbors(0) }
     end
   end
   
