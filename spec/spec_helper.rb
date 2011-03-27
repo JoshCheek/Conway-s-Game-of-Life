@@ -51,7 +51,7 @@ RSpec::Matchers.define :have_life_at do |*expected_life|
         actual_life << [x,y] if element
       end
     end
-    actual_life.sort.should == expected_life.sort
+    actual_life.sort == expected_life.sort
   end
   
   failure_message_for_should do
