@@ -71,6 +71,9 @@ describe GameOfLife do
       subject { game = GameOfLife.new; game.width = game.height = 10; game }
       specify { subject.width.should  be 10 }
       specify { subject.height.should be 10 }
+      it 'should convert to a 10x10 nil array' do
+        subject.to_a.should == [[nil]*10]*10
+      end
     end
   end
   
