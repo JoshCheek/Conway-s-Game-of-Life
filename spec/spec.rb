@@ -88,18 +88,30 @@ describe GameOfLife do
     end
   end
   
-  describe 'several iterations of 6x6, seeded with [1,1] , [2,2] , [2,3] , [3,2] , [3,3]' do
+  describe 'several iterations of 6x6, seeded with [1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3]' do
     initial_game = lambda do
-      game = GameOfLife.new [1,1] , [2,2] , [2,3] , [3,2] , [3,3]
+      game = GameOfLife.new [1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3]
       game.width = game.height = 6
       game
     end
     subject { initial_game.call }
     it { should know_it_has_dimensions_of(6,6) }
-    it { should have_life_at([1,1] , [2,2] , [2,3] , [3,2] , [3,3]) }
-    context 'after one tick!' do
+    it { should have_life_at([1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3]) }
+    context 'after one tick' do
       subject { initial_game.call.tick! }
-      it { should have_life_at([2,1],[1,2],[2,3],[3,2],[3,3]) }
+      it { should have_life_at([1,1],[2,1],[3,1],[2,3],[3,3]) }
+    end
+    context 'after two ticks' do
+      subject { initial_game.call.tick!.tick! }
+      it { should have_life_at([2,0],[2,1],[1,2]) }
+    end
+    context 'after three ticks' do
+      subject { initial_game.call.tick!.tick!.tick! }
+      it { should have_life_at([1,1],[2,1]) }
+    end
+    context 'after four ticks' do
+      subject { initial_game.call.tick!.tick!.tick!.tick! }
+      it { should have_life_at() }
     end
   end
 
