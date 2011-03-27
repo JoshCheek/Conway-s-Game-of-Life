@@ -98,11 +98,7 @@ describe GameOfLife do
     it { should know_it_has_dimensions_of(6,6) }
     it { should have_life_at([1,1] , [2,2] , [2,3] , [3,2] , [3,3]) }
     context 'after one tick!' do
-      subject do
-        game = initial_game.call
-        game.tick!
-        game
-      end
+      subject { initial_game.call.tick! }
       it { should have_life_at([2,1],[1,2],[2,3],[3,2],[3,3]) }
     end
   end
