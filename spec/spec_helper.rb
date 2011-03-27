@@ -59,7 +59,11 @@ RSpec::Matchers.define :have_life_at do |*expected_life|
   end
   
   description do
-    "be dead everywhere except #{pretty[expected_life]} should be alive"
+    if expected_life.empty?
+      "be dead everywhere"
+    else
+      "be dead everywhere except #{pretty[expected_life]} should be alive"
+    end
   end
 end
 
