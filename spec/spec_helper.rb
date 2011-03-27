@@ -62,3 +62,28 @@ RSpec::Matchers.define :have_life_at do |*expected_life|
     "should be dead everywhere except #{pretty[expected_life]} should be alive"
   end
 end
+
+
+RSpec::Matchers.define :know_it_has_dimensions_of do |width,height|
+  
+  observed = { :width => nil   , :height => nil }
+  expected = { :width => width , :height => height }
+  
+  match do |board|
+    observed[:width]  = board.width
+    observed[:height] = board.height
+    expected == observed
+  end
+  
+  failure_message_for_should do
+    msg = []
+    msg << "width should be #{expected[:width]} but is #{observed[:width]}" unless observed[:width] == expected[:width]
+    msg << "width should be #{expected[:height]} but is #{observed[:height]}" unless observed[:height] == expected[:height]
+    msg.join(" , ")
+  end
+  
+  description do
+    "know it has dimensions of #{width}x#{height}"
+  end
+  
+end

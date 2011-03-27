@@ -78,6 +78,7 @@ describe GameOfLife do
         game.height = 10
         game
       end
+      it { should know_it_has_dimensions_of(5,10) }
       specify { subject.width.should  be 5 }
       specify { subject.height.should be 10 }
       describe '#to_a' do
@@ -87,5 +88,5 @@ describe GameOfLife do
       end
     end
   end
-  
+
 end
