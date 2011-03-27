@@ -84,5 +84,15 @@ describe GameOfLife do
       end
     end
   end
+  
+  describe 'several iterations of 6x6, seeded with [2,2] , [2,3] , [3,2] , [3,3]' do
+    subject do
+      game = GameOfLife.new [2,2] , [2,3] , [3,2] , [3,3]
+      game.width = game.height = 6
+      game
+    end
+    it { should know_it_has_dimensions_of(6,6) }
+    it { should have_life_at([2,2] , [2,3] , [3,2] , [3,3]) }
+  end
 
 end
