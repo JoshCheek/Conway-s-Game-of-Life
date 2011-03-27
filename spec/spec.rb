@@ -85,14 +85,23 @@ describe GameOfLife do
     end
   end
   
-  describe 'several iterations of 6x6, seeded with [2,2] , [2,3] , [3,2] , [3,3]' do
-    subject do
-      game = GameOfLife.new [2,2] , [2,3] , [3,2] , [3,3]
+  describe 'several iterations of 6x6, seeded with [1,1] , [2,2] , [2,3] , [3,2] , [3,3]' do
+    initial_game = lambda do
+      game = GameOfLife.new [1,1] , [2,2] , [2,3] , [3,2] , [3,3]
       game.width = game.height = 6
       game
     end
+    subject { initial_game.call }
     it { should know_it_has_dimensions_of(6,6) }
-    it { should have_life_at([2,2] , [2,3] , [3,2] , [3,3]) }
+    it { should have_life_at([1,1] , [2,2] , [2,3] , [3,2] , [3,3]) }
+    context 'after one tick!' do
+      subject do
+        game = initial_game.call
+        game.tick!
+        game
+      end
+      it { should }
+    end
   end
 
 end
