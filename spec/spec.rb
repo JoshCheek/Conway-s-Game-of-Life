@@ -57,6 +57,9 @@ describe GameOfLife do
         end
       end
     end
+    it 'returns the game' do
+      subject.tick!.should == subject
+    end
   end
   
   describe "bounds" do
@@ -100,7 +103,7 @@ describe GameOfLife do
         game.tick!
         game
       end
-      it { should }
+      it { should have_life_at([2,1],[1,2],[2,3],[3,2],[3,3]) }
     end
   end
 

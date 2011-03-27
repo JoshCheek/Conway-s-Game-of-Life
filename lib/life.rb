@@ -24,6 +24,7 @@ class GameOfLife
     new_cells = Set.new
     potential_cells { |cell| new_cells << cell if alive_tomorrow?(*cell) }
     @cells = new_cells
+    self
   end
     
   def to_a
