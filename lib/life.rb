@@ -27,7 +27,7 @@ class GameOfLife
   end
     
   def to_a
-    Array.new(height) { Array.new(width) { nil } }
+    Array.new(height) { |y| Array.new(width) { |x| alive? x , y or nil } }
   end
 
 private

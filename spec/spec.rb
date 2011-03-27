@@ -75,6 +75,29 @@ describe GameOfLife do
         subject.to_a.should == [[nil]*10]*10
       end
     end
+    context '5x10 array with life at [1,1] , [4,8]' do
+      subject do
+        game        = GameOfLife.new [1,1] , [4,8]
+        game.width  = 5
+        game.height = 10
+        game
+      end
+      specify { subject.width.should  be 5 }
+      specify { subject.height.should be 10 }
+      describe '#to_a' do
+        specify { subject.to_a.should have(10).columns }
+        it('should have 5 rows') { subject.to_a.should be_all { |row| row.size == 5 } }
+        it 'should be nil everywhere except [1,1] and [4,8] should not be nil' do
+          alive = Array.new
+          subject.to_a.each_with_index do |row,y|
+            row.each_with_index do |element,x|
+              alive << [x,y] if element
+            end
+          end
+          alive.should == [[1,1] , [4,8]]
+        end
+      end
+    end
   end
   
 end
