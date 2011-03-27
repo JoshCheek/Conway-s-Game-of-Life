@@ -67,6 +67,10 @@ describe GameOfLife do
         subject.to_a.should == Array.new(40) { [nil]*60 }
       end
     end
+    context '10x10' do
+      subject { game = GameOfLife.new; game.width = game.height = 10; game }
+      specify { subject.width.should == 10 }
+    end
   end
   
 end

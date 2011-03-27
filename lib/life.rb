@@ -2,8 +2,12 @@ require 'set'
 
 class GameOfLife
   
+  attr_accessor :width , :height
+    
   def initialize(*cells)
-    @cells = Set[*cells]
+    @cells  = Set[*cells]
+    @width  = 60
+    @height = 40
   end
   
   def alive?(x,y)
@@ -21,15 +25,7 @@ class GameOfLife
     potential_cells { |cell| new_cells << cell if alive_tomorrow?(*cell) }
     @cells = new_cells
   end
-  
-  def width
-    60
-  end
-  
-  def height
-    40
-  end
-  
+    
   def to_a
     Array.new(height) { Array.new(width) { nil } }
   end
