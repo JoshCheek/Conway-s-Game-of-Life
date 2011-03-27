@@ -2,8 +2,8 @@
 
 usage() {
   echo 'first argument should be "text" or "image"' 
-  echo "you may optionally specify initial state with --seed='[x1,y1],[x2,y2],...,[xn,yn]'"
-  echo "you may optionally specify dimensions with --dimensions=x,y"
+  echo "you may optionally specify initial state with -seed='[x1,y1],[x2,y2],...,[xn,yn]'"
+  echo "you may optionally specify dimensions with -dimensions=x,y"
 }
 
 bad_params() {
@@ -18,4 +18,19 @@ if [ -z "$output_format" ] || [ "$output_format" != text -a "$output_format" != 
 fi
 shift
 
-# remaining params should be either --seed='[x1,y1],[x2,y2],...,[xn,yn]' or --dimensions=x,y
+# remaining params should be either -seed='[x1,y1],[x2,y2],...,[xn,yn]' or -dimensions=x,y
+for param in "$@"; do
+  if grep -E '^-seed=\[[0-9]+,[0-9]+\](,\[[0-9]+,[0-9]+\])*$' <<<"$param" 2>&1 >/dev/null || grep -E '^-dimensions=[0-9]+,[0-9]+' <<<"$param" 2>&1 >/dev/null; then
+    : # params are good
+  else
+    echo "Bad Parameter: $param" 1>&2
+    echo
+    bad_params
+  fi
+done
+
+# pass off to the appropriate script
+if [ $output_format = text ]; then
+  echo pass
+  "$0_text" "$@"
+fi
