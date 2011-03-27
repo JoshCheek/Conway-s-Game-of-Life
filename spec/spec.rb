@@ -61,15 +61,16 @@ describe GameOfLife do
   
   describe "bounds" do
     context 'defaults to 60x40' do
-      specify { subject.width.should  == 60 }
-      specify { subject.height.should == 40 }
+      specify { subject.width.should  be 60 }
+      specify { subject.height.should be 40 }
       it "should convert to a 60x40 nil array" do 
         subject.to_a.should == Array.new(40) { [nil]*60 }
       end
     end
     context '10x10' do
       subject { game = GameOfLife.new; game.width = game.height = 10; game }
-      specify { subject.width.should == 10 }
+      specify { subject.width.should  be 10 }
+      specify { subject.height.should be 10 }
     end
   end
   
