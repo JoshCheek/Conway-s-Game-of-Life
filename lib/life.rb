@@ -30,8 +30,8 @@ class GameOfLife
     40
   end
   
-  def to_s
-    ((" " * 60 + "\n") * height).chomp
+  def to_a
+    Array.new(height) { Array.new(width) { nil } }
   end
 
 private
