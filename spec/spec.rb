@@ -61,14 +61,12 @@ describe GameOfLife do
   
   describe "bounds" do
     context 'defaults to 60x40' do
-      specify { subject.width.should  be 60 }
-      specify { subject.height.should be 40 }
+      it { should know_it_has_dimensions_of(60,40) }
       it { should have_life_at() }
     end
     context '10x10' do
       subject { game = GameOfLife.new; game.width = game.height = 10; game }
-      specify { subject.width.should  be 10 }
-      specify { subject.height.should be 10 }
+      it { should know_it_has_dimensions_of(10,10) }
       it { should have_life_at() }
     end
     context '5x10 array with life at [1,1] , [4,8]' do
@@ -79,8 +77,6 @@ describe GameOfLife do
         game
       end
       it { should know_it_has_dimensions_of(5,10) }
-      specify { subject.width.should  be 5 }
-      specify { subject.height.should be 10 }
       describe '#to_a' do
         specify { subject.to_a.should have(10).columns }
         it('should have 5 rows') { subject.to_a.should be_all { |row| row.size == 5 } }
