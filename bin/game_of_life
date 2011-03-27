@@ -1,0 +1,21 @@
+#!/bin/bash
+
+usage() {
+  echo 'first argument should be "text" or "image"' 
+  echo "you may optionally specify initial state with --seed='[x1,y1],[x2,y2],...,[xn,yn]'"
+  echo "you may optionally specify dimensions with --dimensions=x,y"
+}
+
+bad_params() {
+  usage 1>&2
+  exit 1
+}
+
+# first param should be the output format, either 'text' or 'image'
+output_format=$1
+if [ -z "$output_format" ] || [ "$output_format" != text -a "$output_format" != image ]; then
+  bad_params
+fi
+shift
+
+# remaining params should be either --seed='[x1,y1],[x2,y2],...,[xn,yn]' or --dimensions=x,y
