@@ -87,15 +87,7 @@ describe GameOfLife do
       describe '#to_a' do
         specify { subject.to_a.should have(10).columns }
         it('should have 5 rows') { subject.to_a.should be_all { |row| row.size == 5 } }
-        it 'should be nil everywhere except [1,1] and [4,8] should not be nil' do
-          alive = Array.new
-          subject.to_a.each_with_index do |row,y|
-            row.each_with_index do |element,x|
-              alive << [x,y] if element
-            end
-          end
-          alive.should == [[1,1] , [4,8]]
-        end
+        it { should have_life_at([1,1] , [4,8]) }
       end
     end
   end
