@@ -32,6 +32,7 @@ board = GameOfLife.new(*$seed)
 # or use the board's defaults
 $dimensions ||= "#{board.width},#{board.height}"
 board.width , board.height = eval "[#$dimensions]"
+side_length = 5
 
 
 
@@ -56,19 +57,27 @@ def to_rgb(colour)
   colour.to_s.delete('#').scan(/../).map { |component| component.to_i(16) }.to_java(:int)
 end
 
-def draw_board(board,filename)
+def draw_pixel(pixels,x,y,side_length,color)
+  (x*side_length...x.next*side_length).each do |x_i|
+    (y*side_length...y.next*side_length).each do |y_i|
+      pixels.set_pixel x_i , y_i , color
+    end
+  end  
+end
+
+def make_image(board,filename,side_length)
   
   # it takes a while, keep user updated
   print "\e[0GDrawing #{filename}"
   
   # http://download.oracle.com/javase/6/docs/api/java/awt/image/BufferedImage.html
-  canvas = BufferedImage.new board.width , board.height , BufferedImage::TYPE_INT_RGB
+  canvas = BufferedImage.new board.width*side_length , board.height*side_length , BufferedImage::TYPE_INT_RGB
   pixels = canvas.get_raster
   
   board.to_a.each_with_index do |row,y|
     row.each_with_index do |element,x|
       color = to_rgb( element ? 'FFFFFF' : '000000')
-      pixels.set_pixel x , y , color
+      draw_pixel pixels , x , y , side_length , color
     end
   end
   
@@ -93,6 +102,6 @@ Signal.trap("INT") { exit }
 infinity = 1 / 0.0
 0.upto infinity do |index|
   filename = File.join dirname , '%05d.gif'%index
-  draw_board board , filename
+  make_image board , filename , side_length
   board.tick!
 end
