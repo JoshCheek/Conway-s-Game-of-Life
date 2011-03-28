@@ -1,14 +1,17 @@
 #!/usr/bin/env watchr
 
-# --------------------------------------------------
-# Rules
-# --------------------------------------------------
-watch '^.*\.rb$' do
-  system    'rspec '                                     +
-            '--color '                                   +
-            '--format=documentation '                    +
-            'spec/spec.rb'
+def run_test
+  system  'rspec '                  +
+          '--color '                +
+          '--format=documentation ' +
+          'spec/spec.rb'
   puts "-" * 20 + "\n\n"
+end
+
+run_test
+
+watch '^.*\.rb$' do
+  run_test  
 end
 
 # --------------------------------------------------
