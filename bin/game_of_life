@@ -4,7 +4,7 @@
 
 # ==========  CHECK COMMAND LINE ARGS  ==========
 def usage
-  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate]"
+  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate] [image_dir]"
   puts "where:"
   puts "  seed is -seed=[x1,y1],[x2,y2],...,[xn,yn]"
   puts "    and upper left is [0,0]"
@@ -18,6 +18,9 @@ def usage
   puts "    then push them out to the middle, for example"
   puts "  rate is -rate=n"
   puts "    it sets the frame rate for the video, defaults to 16"
+  puts "  image_dir is -image_dir=path"
+  puts "    images that compose the frames in the movie will be"
+  puts "    stored in this directory"
   puts "Output will be displayed on terminal."
   puts "Send interrupt once when you are satisfied."
   puts "It will generate the file ./life.mp4"
@@ -73,8 +76,7 @@ import java.awt.image.WritableRaster
 
 # make the results dir
 require 'fileutils'
-dirname = "/tmp/game-of-life-images-#{Time.now.strftime '%s'}"
-# dirname = "#{Dir.pwd}/game-of-life-images-#{Time.now.strftime '%s'}"    # stores in current dir 
+dirname = $image_dir || "/tmp/game-of-life-images-#{Time.now.strftime '%s'}"
 FileUtils.rm_rf dirname
 FileUtils.mkdir dirname
 
