@@ -5,9 +5,20 @@
 $: << File.dirname(__FILE__) + '/../lib'
 require 'game_of_life'
 
+# some different defaults you can use
+spaceship = '[0,0],[3,0],[4,1],[0,2],[4,2],[1,3],[2,3],[3,3],[4,3]'
+gun = begin
+  left_square   = '[1,5],[2,5],[1,6],[2,6]'
+  half_circle   = '[14,3],[13,3],[12,4],[11,5],[11,6],[11,7],[12,8],[13,9],[14,9]'
+  arrow         = '[16,4],[17,5],[15,6],[17,6],[18,6],[17,7],[16,8]'
+  frog          = '[25,1],[25,2],[23,2],[21,3],[22,3],[21,4],[22,4],[21,5],[22,5],[23,6],[25,6],[25,7]'
+  right_square  = '[35,3],[36,3],[35,4],[36,4]'
+  "#{left_square},#{half_circle},#{arrow},#{frog},#{right_square}"
+end
+
 # create the board, using the seed that was passed in
 x_offset , y_offset = 5 , 5
-$seed ||= '[0,0],[3,0],[4,1],[0,2],[4,2],[1,3],[2,3],[3,3],[4,3]'
+$seed ||= gun
 $seed = eval "[#$seed]"
 $seed.map! { |(x,y)| [ x+x_offset , y+y_offset ] }
 board = GameOfLife.new(*$seed)
