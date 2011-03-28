@@ -4,7 +4,7 @@
 
 # ==========  CHECK COMMAND LINE ARGS  ==========
 def usage
-  puts "usage: game_of_life [seed] [dimensions] [side_length]"
+  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate]"
   puts "where:"
   puts "  seed is -seed=[x1,y1],[x2,y2],...,[xn,yn]"
   puts "    and upper left is [0,0]"
@@ -13,6 +13,11 @@ def usage
   puts "    and determines how many cells are on the board"
   puts "  side_length is -side_length=n"
   puts "    n determines how many pixels are used for each cell"
+  puts "  offset is -offset=x,y"
+  puts "    it allows you to enter pixels in relation to zero"
+  puts "    then push them out to the middle, for example"
+  puts "  rate is -rate=n"
+  puts "    it sets the frame rate for the video, defaults to 16"
   puts "Output will be displayed on terminal."
   puts "Send interrupt once when you are satisfied."
   puts "It will generate the file ./life.mp4"
@@ -45,7 +50,7 @@ gun = begin
 end
 
 # create the board, using the seed that was passed in, or default
-x_offset , y_offset = 0 , 0
+x_offset , y_offset = ($offset||"0,0").split(',').map(&:to_i)
 $seed ||= gun
 $seed = eval "[#$seed]"
 $seed.map! { |(x,y)| [ x+x_offset , y+y_offset ] }
@@ -113,7 +118,7 @@ end
 
 # turn the results into a movie 
 at_exit do
-  system %Q(ffmpeg -r 16 -f image2 -i "#{dirname}/%05d.gif" -b 600k ./life.mp4)
+  system %Q(ffmpeg -r #{$rate||16} -f image2 -i "#{dirname}/%05d.gif" -b 600k ./life.mp4)
 end
 
 # some games never end, so user will have to interrupt them
