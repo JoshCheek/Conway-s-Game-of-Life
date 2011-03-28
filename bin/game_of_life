@@ -1,37 +1,110 @@
-#!/bin/bash
+#!/usr/bin/env jruby -s --server
 
-usage() {
-  echo 'first argument should be "text" or "image"' 
-  echo "you may optionally specify initial state with -seed='[x1,y1],[x2,y2],...,[xn,yn]'"
-  echo "you may optionally specify dimensions with -dimensions=x,y"
-}
+# this script is intended to be invoked via game_of_life
 
-bad_params() {
-  usage 1>&2
-  exit 1
-}
 
-# first param should be the output format, either 'text' or 'image'
-output_format=$1
-if [ -z "$output_format" ] || [ "$output_format" != text -a "$output_format" != image ]; then
-  bad_params
-fi
-shift
 
-# remaining params should be either -seed='[x1,y1],[x2,y2],...,[xn,yn]' or -dimensions=x,y
-for param in "$@"; do
-  if grep -E '^-seed=\[[0-9]+,[0-9]+\](,\[[0-9]+,[0-9]+\])*$' <<<"$param" 2>&1 >/dev/null || grep -E '^-dimensions=[0-9]+,[0-9]+' <<<"$param" 2>&1 >/dev/null; then
-    : # params are good
-  else
-    echo "Bad Parameter: $param" 1>&2
-    echo
-    bad_params
-  fi
-done
+# ==========  SETTING UP THE GAME  ==========
 
-# pass off to the appropriate script
-if [ $output_format = text ]; then
-  "$0_text" "$@"
-else
-  "$0_image" "$@"
-fi
+# make our lib accessible and load game of life code
+$: << File.dirname(__FILE__) + '/../lib'
+require 'game_of_life'
+
+# some different defaults you can use
+spaceship = '[0,0],[3,0],[4,1],[0,2],[4,2],[1,3],[2,3],[3,3],[4,3]'
+gun = begin
+  left_square   = '[1,5],[2,5],[1,6],[2,6]'
+  half_circle   = '[14,3],[13,3],[12,4],[11,5],[11,6],[11,7],[12,8],[13,9],[14,9]'
+  arrow         = '[16,4],[17,5],[15,6],[17,6],[18,6],[17,7],[16,8]'
+  frog          = '[25,1],[25,2],[23,2],[21,3],[22,3],[21,4],[22,4],[21,5],[22,5],[23,6],[25,6],[25,7]'
+  right_square  = '[35,3],[36,3],[35,4],[36,4]'
+  "#{left_square},#{half_circle},#{arrow},#{frog},#{right_square}"
+end
+
+# create the board, using the seed that was passed in
+x_offset , y_offset = 0 , 0
+$seed ||= gun
+$seed = eval "[#$seed]"
+$seed.map! { |(x,y)| [ x+x_offset , y+y_offset ] }
+board = GameOfLife.new(*$seed)
+
+# set the dimensions using the seed that was passed in
+# or use the board's defaults
+$dimensions ||= "#{board.width},#{board.height}"
+board.width , board.height = eval "[#$dimensions]"
+side_length = 5
+
+
+
+# ==========  SETTING UP THE IMAGES  ==========
+
+# load the Java image apis
+include Java
+import javax.imageio.ImageIO
+import java.awt.image.BufferedImage
+import java.awt.image.WritableRaster
+
+# make the results dir
+require 'fileutils'
+dirname = "/tmp/game-of-life-images-#{Time.now.strftime '%s'}"
+# dirname = "#{Dir.pwd}/game-of-life-images-#{Time.now.strftime '%s'}"    # stores in current dir 
+FileUtils.rm_rf dirname
+FileUtils.mkdir dirname
+
+# converts colours, usually in the rgb hex format :'#FF0000'
+# into the rgb format java array of [ red_int , green_int , blue_int ]
+def to_rgb(colour)
+  colour.to_s.delete('#').scan(/../).map { |component| component.to_i(16) }.to_java(:int)
+end
+
+def draw_pixel(pixels,x,y,side_length,color)
+  (x*side_length...x.next*side_length).each do |x_i|
+    (y*side_length...y.next*side_length).each do |y_i|
+      pixels.set_pixel x_i , y_i , color
+    end
+  end  
+end
+
+def draw_board(board,side_length)
+  # http://download.oracle.com/javase/6/docs/api/java/awt/image/BufferedImage.html
+  canvas = BufferedImage.new board.width*side_length , board.height*side_length , BufferedImage::TYPE_INT_RGB
+  pixels = canvas.get_raster
+  
+  board.to_a.each_with_index do |row,y|
+    row.each_with_index do |element,x|
+      color = to_rgb( element ? 'FFFFFF' : '000000')
+      draw_pixel pixels , x , y , side_length , color
+    end
+  end
+  
+  canvas
+end
+
+def make_image(board,filename,side_length)
+  print "\e[0GDrawing #{filename}"                            # it takes a while, keep user updated
+  canvas = draw_board board , side_length                     # generate the image
+  ImageIO.write canvas , "gif" , java.io.File.new(filename)   # write the image to file
+end
+
+
+# ==========  PLAY THE GAME AND  MAKE THE VIDEO  ==========
+
+# turn the results into a movie 
+at_exit do
+  system %Q(ffmpeg -r 16 -f image2 -i "#{dirname}/%05d.gif" -b 600k ./life.mp4)
+end
+
+# some games never end, so user will have to interrupt them
+# we still want to print the game out in this case
+Signal.trap("INT") { exit }
+
+# draw each image
+system 'clear'
+infinity = 1 / 0.0
+0.upto infinity do |index|
+  print "\e[0;0H"
+  puts board.to_a.map { |row| row.map { |element| element ? 'X' : ' ' }.join }.join("\n")
+  filename = File.join dirname , '%05d.gif'%index
+  make_image board , filename , side_length
+  board.tick!
+end
