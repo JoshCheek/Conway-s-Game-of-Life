@@ -31,6 +31,7 @@ done
 
 # pass off to the appropriate script
 if [ $output_format = text ]; then
-  echo pass
   "$0_text" "$@"
+else
+  "$0_image" "$@"
 fi
