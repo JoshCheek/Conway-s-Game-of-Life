@@ -65,11 +65,7 @@ def draw_pixel(pixels,x,y,side_length,color)
   end  
 end
 
-def make_image(board,filename,side_length)
-  
-  # it takes a while, keep user updated
-  print "\e[0GDrawing #{filename}"
-  
+def draw_board(board,side_length)
   # http://download.oracle.com/javase/6/docs/api/java/awt/image/BufferedImage.html
   canvas = BufferedImage.new board.width*side_length , board.height*side_length , BufferedImage::TYPE_INT_RGB
   pixels = canvas.get_raster
@@ -81,9 +77,13 @@ def make_image(board,filename,side_length)
     end
   end
   
-  # write the image to file
-  ImageIO.write canvas , "gif" , java.io.File.new(filename)
-  
+  canvas
+end
+
+def make_image(board,filename,side_length)
+  print "\e[0GDrawing #{filename}"                            # it takes a while, keep user updated
+  canvas = draw_board board , side_length                     # generate the image
+  ImageIO.write canvas , "gif" , java.io.File.new(filename)   # write the image to file
 end
 
 
