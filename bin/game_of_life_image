@@ -22,7 +22,7 @@ gun = begin
 end
 
 # create the board, using the seed that was passed in
-x_offset , y_offset = 5 , 5
+x_offset , y_offset = 0 , 0
 $seed ||= gun
 $seed = eval "[#$seed]"
 $seed.map! { |(x,y)| [ x+x_offset , y+y_offset ] }
@@ -45,8 +45,8 @@ import java.awt.image.WritableRaster
 
 # make the results dir
 require 'fileutils'
-# dirname = '/tmp/game-of-life-images'
-dirname = "#{Dir.pwd}/game-of-life-images"
+dirname = "/tmp/game-of-life-images-#{Time.now.strftime '%s'}"
+# dirname = "#{Dir.pwd}/game-of-life-images-#{Time.now.strftime '%s'}"    # stores in current dir 
 FileUtils.rm_rf dirname
 FileUtils.mkdir dirname
 
@@ -59,7 +59,7 @@ end
 def draw_board(board,filename)
   
   # it takes a while, keep user updated
-  puts "Drawing #{filename}"
+  print "\e[0GDrawing #{filename}"
   
   # http://download.oracle.com/javase/6/docs/api/java/awt/image/BufferedImage.html
   canvas = BufferedImage.new board.width , board.height , BufferedImage::TYPE_INT_RGB
@@ -89,11 +89,10 @@ end
 # we still want to print the game out in this case
 Signal.trap("INT") { exit }
 
-# go to upper left and print the game out
+# draw each image
 infinity = 1 / 0.0
 0.upto infinity do |index|
   filename = File.join dirname , '%05d.gif'%index
   draw_board board , filename
   board.tick!
-  sleep 0.01
 end
