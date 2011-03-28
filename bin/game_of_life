@@ -2,6 +2,29 @@
 
 # this script is intended to be invoked via game_of_life
 
+# ==========  CHECK COMMAND LINE ARGS  ==========
+def usage
+  puts "usage: game_of_life [seed] [dimensions] [side_length]"
+  puts "where:"
+  puts "  seed is -seed=[x1,y1],[x2,y2],...,[xn,yn]"
+  puts "    and upper left is [0,0]"
+  puts "    defaults to Gosper's Glider Gun"
+  puts "  dimensions is -dimensions=x,y"
+  puts "    and determines how many cells are on the board"
+  puts "  side_length is -side_length=n"
+  puts "    n determines how many pixels are used for each cell"
+  puts "Output will be displayed on terminal."
+  puts "Send interrupt once when you are satisfied."
+  puts "It will generate the file ./life.mp4"
+end
+
+# print usage if necessary
+if $h
+  usage
+  exit
+end
+
+
 
 
 # ==========  SETTING UP THE GAME  ==========
@@ -21,7 +44,7 @@ gun = begin
   "#{left_square},#{half_circle},#{arrow},#{frog},#{right_square}"
 end
 
-# create the board, using the seed that was passed in
+# create the board, using the seed that was passed in, or default
 x_offset , y_offset = 0 , 0
 $seed ||= gun
 $seed = eval "[#$seed]"
@@ -32,8 +55,7 @@ board = GameOfLife.new(*$seed)
 # or use the board's defaults
 $dimensions ||= "#{board.width},#{board.height}"
 board.width , board.height = eval "[#$dimensions]"
-side_length = 5
-
+$side_length = ($side_length || 5).to_i
 
 
 # ==========  SETTING UP THE IMAGES  ==========
@@ -105,6 +127,6 @@ infinity = 1 / 0.0
   print "\e[0;0H"
   puts board.to_a.map { |row| row.map { |element| element ? 'X' : ' ' }.join }.join("\n")
   filename = File.join dirname , '%05d.gif'%index
-  make_image board , filename , side_length
+  make_image board , filename , $side_length
   board.tick!
 end
