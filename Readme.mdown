@@ -5,7 +5,7 @@ Went up to Kansas City and met with some people from [Databasically](http://data
 
 Our program was Conway's Game of Life, and I enjoyed it enough that I decided to complete it over the weekend. There are a few things that could be done to make it better (ie graphics based input format), but it meets all my needs at present and I'm pretty happy with it. Especially I think I did fairly well on the RSpec part. Though there were some times where I wasn't really sure what to do next. I think using Cucumber would have taken care of those, maybe over the summer I'll reread that first portion of the RSpec book and try doing it again with Cucumber.
 
-Anyway, [here's a video](http://www.fixme.com) so you can see basically how it works without having to actually install it.
+Anyway, [here's an example output](http://vimeo.com/21594436) so you can see basically how it works without having to actually install it. And [here's a narrative](http://vimeo.com/21594165) where I walk through it a little bit.
 
 
 Usage
