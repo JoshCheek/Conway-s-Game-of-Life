@@ -74,12 +74,12 @@ class << GameOfLife
   def [](map=nil)
     args = Array.new
     unless map.nil?
-      rows = map.split("\n")
+      rows = map.split("\n").map { |row| row.gsub(/\s/,'').split(//) }
       width = rows.first.size
       raise "rows should all be the same length" unless rows.all? { |row| row.size == width }
       dimensions = { :height => rows.size , :width => width }
       rows.each_with_index do |row,y|
-        row.split(//).each_with_index do |char,x|
+        row.each_with_index do |char,x|
           next if char == '.'
           args << [x,y]
         end

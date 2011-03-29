@@ -131,7 +131,9 @@ describe GameOfLife do
     specify 'should raise an error if rows are uneven' do
       lambda { GameOfLife[".\n.."] }.should raise_exception
     end
-    specify 'should ignore whitespace'
+    specify 'should ignore whitespace (except line ends)' do
+      GameOfLife["   ....\n.    .     .  .     \n   ..     . \t\t    ."].should == GameOfLife.new(:width => 4 , :height => 3)
+    end
   end
   
   describe '#==' do
