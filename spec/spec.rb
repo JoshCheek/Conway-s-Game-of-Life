@@ -87,12 +87,7 @@ describe GameOfLife do
       it { should have_life_at() }
     end
     context '5x10 array with life at [1,1] , [4,8]' do
-      subject do
-        game        = GameOfLife.new [1,1] , [4,8]
-        game.width  = 5
-        game.height = 10
-        game
-      end
+      subject { GameOfLife.new [1,1] , [4,8] , :width => 5 , :height => 10 }
       it { should know_it_has_dimensions_of(5,10) }
       describe '#to_a' do
         specify { subject.to_a.should have(10).columns }
@@ -103,11 +98,7 @@ describe GameOfLife do
   end
   
   describe 'several iterations of 6x6, seeded with [1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3]' do
-    initial_game = lambda do
-      game = GameOfLife.new [1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3]
-      game.width = game.height = 6
-      game
-    end
+    initial_game = lambda { GameOfLife.new [1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3] , :width => 6 , :height => 6 }
     subject { initial_game.call }
     it { should know_it_has_dimensions_of(6,6) }
     it { should have_life_at([1,1] , [2,1] , [2,2] , [3,2] , [2,3] , [3,3]) }
@@ -161,31 +152,11 @@ describe GameOfLife do
       end
     end
     describe 'set and dimensions' do
-      subject { g=GameOfLife.new([1,1]); g.width=10; g.height=5; g }
-      specify '[1,1]10x5 == [1,1]10x5' do
-        g = GameOfLife.new [1,1]
-        g.width = 10
-        g.height = 5
-        should == g
-      end
-      specify '[1,1]10x5 != [1,1]10x4' do
-        g = GameOfLife.new [1,1]
-        g.width = 10
-        g.height = 4
-        should_not == g
-      end
-      specify '[1,1]10x5 != [1,1]11x5' do
-        g = GameOfLife.new [1,1]
-        g.width = 11
-        g.height = 5
-        should_not == g
-      end
-      specify '[1,1]10x5 != [1,2]10x5' do
-        g = GameOfLife.new [1,2]
-        g.width = 10
-        g.height = 5
-        should_not == g
-      end
+      subject { GameOfLife.new [1,1] , :width => 10 , :height => 5 }
+      specify('[1,1]10x5 == [1,1]10x5') { should      == GameOfLife.new( [1,1] , :width => 10 , :height => 5 ) }
+      specify('[1,1]10x5 != [1,1]10x4') { should_not  == GameOfLife.new( [1,1] , :width => 10 , :height => 4 ) }
+      specify('[1,1]10x5 != [1,1]11x5') { should_not  == GameOfLife.new( [1,1] , :width => 11 , :height => 5 ) }
+      specify('[1,1]10x5 != [1,2]10x5') { should_not  == GameOfLife.new( [1,2] , :width => 10 , :height => 5 ) }
     end
   end
 
