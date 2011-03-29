@@ -118,5 +118,9 @@ describe GameOfLife do
   describe '.[]' do
     specify { GameOfLife[].should == GameOfLife.new }
   end
+  
+  describe '#==' do
+    specify { GameOfLife.new.should == GameOfLife.new }
+  end
 
 end
