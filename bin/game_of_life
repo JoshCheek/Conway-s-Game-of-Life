@@ -66,14 +66,14 @@ end
 # create the board, using the seed that was passed in, or default
 x_offset , y_offset = ($offset||"0,0").split(',').map(&:to_i)
 $seed ||= gun
-$seed = eval "[#$seed]"
+$seed = $seed.scan(/\[\d+,\d+\]/).map { |cell| cell.scan(/\d+/).map(&:to_i) }
 $seed.map! { |(x,y)| [ x+x_offset , y+y_offset ] }
 board = GameOfLife.new(*$seed)
 
 # set the dimensions using the seed that was passed in
 # or use the board's defaults
 $dimensions ||= "#{board.width},#{board.height}"
-board.width , board.height = eval "[#$dimensions]"
+board.width , board.height = $dimensions.split(',').map(&:to_i)
 $side_length = ($side_length || 5).to_i
 
 
