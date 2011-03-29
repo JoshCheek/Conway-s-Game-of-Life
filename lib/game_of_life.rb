@@ -71,8 +71,20 @@ private
 end
 
 class << GameOfLife
-  def []
-    new
+  def [](map=nil)
+    args = Array.new
+    unless map.nil?
+      rows = map.split("\n")
+      dimensions = { :height => rows.size , :width => rows.first.size }
+      rows.each_with_index do |row,y| 
+        row.split(//).each_with_index do |char,x|
+          next if char == '.'
+          args << [x,y]
+        end
+      end
+      args << dimensions
+    end
+    new(*args)
   end
 end
 

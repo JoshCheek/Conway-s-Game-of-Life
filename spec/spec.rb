@@ -122,6 +122,14 @@ describe GameOfLife do
 
   describe '.[]' do
     specify { GameOfLife[].should == GameOfLife.new }
+    specify 'should construct a game from a map' do
+      GameOfLife["x..\n.x.\n..x"].should == GameOfLife.new([0,0],[1,1],[2,2], :width => 3 , :height => 3)
+    end
+    specify 'should allow any non period to be alive' do
+      GameOfLife["9..\n.;.\n..p"].should == GameOfLife.new([0,0],[1,1],[2,2], :width => 3 , :height => 3)
+    end
+    specify 'should raise an error if rows are uneven'
+    specify 'should ignore whitespace'
   end
   
   describe '#==' do
