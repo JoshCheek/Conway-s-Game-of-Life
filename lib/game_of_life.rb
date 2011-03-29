@@ -2,8 +2,8 @@ require 'set'
 
 class GameOfLife
   
-  attr_accessor :width , :height
-    
+  attr_accessor :width , :height , :cells
+
   def initialize(*cells)
     @cells  = Set[*cells]
     @width  = 60
@@ -32,7 +32,7 @@ class GameOfLife
   end
   
   def ==(other)
-    true
+    cells == other.cells
   end
 
 private

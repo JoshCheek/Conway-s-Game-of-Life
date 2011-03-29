@@ -121,6 +121,7 @@ describe GameOfLife do
   
   describe '#==' do
     specify { GameOfLife.new.should == GameOfLife.new }
+    specify { GameOfLife.new.should_not == GameOfLife.new([1,1]) }
   end
 
 end
