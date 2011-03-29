@@ -75,8 +75,10 @@ class << GameOfLife
     args = Array.new
     unless map.nil?
       rows = map.split("\n")
-      dimensions = { :height => rows.size , :width => rows.first.size }
-      rows.each_with_index do |row,y| 
+      width = rows.first.size
+      raise "rows should all be the same length" unless rows.all? { |row| row.size == width }
+      dimensions = { :height => rows.size , :width => width }
+      rows.each_with_index do |row,y|
         row.split(//).each_with_index do |char,x|
           next if char == '.'
           args << [x,y]

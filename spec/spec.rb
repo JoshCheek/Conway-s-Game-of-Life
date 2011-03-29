@@ -128,7 +128,9 @@ describe GameOfLife do
     specify 'should allow any non period to be alive' do
       GameOfLife["9..\n.;.\n..p"].should == GameOfLife.new([0,0],[1,1],[2,2], :width => 3 , :height => 3)
     end
-    specify 'should raise an error if rows are uneven'
+    specify 'should raise an error if rows are uneven' do
+      lambda { GameOfLife[".\n.."] }.should raise_exception
+    end
     specify 'should ignore whitespace'
   end
   
