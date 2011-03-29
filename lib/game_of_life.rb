@@ -32,7 +32,8 @@ class GameOfLife
   end
   
   def ==(other)
-    cells == other.cells
+    cells == other.cells && 
+    width == other.width
   end
 
 private

@@ -125,6 +125,15 @@ describe GameOfLife do
     specify('[[12,21]] == [[12,21]]'              ) { GameOfLife.new([12,21]).should        ==  GameOfLife.new([12,21])       }
     specify('[[12,21]] != [[21,12]]'              ) { GameOfLife.new([12,21]).should_not    ==  GameOfLife.new([21,12])       }
     specify('[[12,21],[4,5]] == [[4,5],[21,12]]'  ) { GameOfLife.new([12,21],[4,5]).should  ==  GameOfLife.new([4,5],[12,21]) }
+    before { @a , @b = GameOfLife.new , GameOfLife.new }
+    specify 'w10 == w10' do
+      @a.width = @b.width = 10
+      @a.should == @b
+    end
+    specify 'w10 != w20' do
+      @a.width = 2 * (@b.width = 10)
+      @b.should_not == @a
+    end
   end
 
 end
