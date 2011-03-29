@@ -4,7 +4,7 @@
 
 # ==========  CHECK COMMAND LINE ARGS  ==========
 def usage
-  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate] [image_dir]"
+  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate] [image_dir] [map]"
   puts "where:"
   puts "  seed is -seed=[x1,y1],[x2,y2],...,[xn,yn]"
   puts "    and upper left is [0,0]"
@@ -21,6 +21,10 @@ def usage
   puts "  image_dir is -image_dir=path"
   puts "    images that compose the frames in the movie will be"
   puts "    stored in this directory"
+  puts "  map allows you to enter your own map (on stdin) that will be parsed for you"
+  puts "    this way you don't have to convert to the coordinate system"
+  puts "    period represents dead cells, anything else represents live cells"
+  puts "    note: if invoking by hand, my system accepts Ctrl-D twice as EOF"
   puts "Output will be displayed on terminal."
   puts "Send interrupt once when you are satisfied."
   puts "It will generate the file ./life.mp4"
@@ -50,6 +54,13 @@ gun = begin
   frog          = '[25,1],[25,2],[23,2],[21,3],[22,3],[21,4],[22,4],[21,5],[22,5],[23,6],[25,6],[25,7]'
   right_square  = '[35,3],[36,3],[35,4],[36,4]'
   "#{left_square},#{half_circle},#{arrow},#{frog},#{right_square}"
+end
+
+# check if there was a map
+if $map
+  board         = GameOfLife[$stdin.read]
+  $seed         = board.cells.to_a.inspect.gsub(/\s/,'').sub(/\A\[/,'').sub(/\]\Z/,'')
+  $dimensions ||= "#{board.width},#{board.height}"
 end
 
 # create the board, using the seed that was passed in, or default
