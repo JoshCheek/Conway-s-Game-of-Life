@@ -62,5 +62,9 @@ private
   
 end
 
-
+class << GameOfLife
+  def []
+    new
+  end
+end
 

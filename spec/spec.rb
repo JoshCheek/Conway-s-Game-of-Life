@@ -115,4 +115,8 @@ describe GameOfLife do
     end
   end
 
+  describe '.[]' do
+    specify { GameOfLife[].should == GameOfLife.new }
+  end
+
 end
