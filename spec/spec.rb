@@ -33,6 +33,20 @@ describe GameOfLife do
     end
   end
   
+  context 'when initialized with an options hash for width' do
+    it 'should know its width' do
+      GameOfLife.new(:width => 111).width.should == 111
+      GameOfLife.new([1,1],:width => 111).width.should == 111
+    end
+    it 'should know its height' do
+      GameOfLife.new(:height => 111).height.should == 111
+      GameOfLife.new([1,1],:height => 111).height.should == 111
+    end
+    it 'should know ts width and height' do
+      GameOfLife.new(:width => 111 , :height => 222).should know_it_has_dimensions_of(111,222)
+      GameOfLife.new([1,1],[2,2],[12,34],:width => 111 , :height => 222).should know_it_has_dimensions_of(111,222)
+    end
+  end
   
   describe '#tick!' do
     { "Rule 1: live cells with < 2 neighbours dies"               => [ [0,true,false] , [1,true,false] ],

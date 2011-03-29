@@ -5,9 +5,11 @@ class GameOfLife
   attr_accessor :width , :height , :cells
 
   def initialize(*cells)
+    cells << Hash[:width,60, :height,40] unless cells.last.kind_of? Hash
+    options = cells.pop
     @cells  = Set[*cells]
-    @width  = 60
-    @height = 40
+    @width  = options[:width]
+    @height = options[:height]
   end
   
   def alive?(x,y)
