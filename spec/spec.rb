@@ -120,27 +120,37 @@ describe GameOfLife do
   end
   
   describe '#==' do
-    specify('[] == []'                            ) { GameOfLife.new.should                 ==  GameOfLife.new                }
-    specify('[] != [[1,1]]'                       ) { GameOfLife.new.should_not             ==  GameOfLife.new([1,1])         }
-    specify('[[12,21]] == [[12,21]]'              ) { GameOfLife.new([12,21]).should        ==  GameOfLife.new([12,21])       }
-    specify('[[12,21]] != [[21,12]]'              ) { GameOfLife.new([12,21]).should_not    ==  GameOfLife.new([21,12])       }
-    specify('[[12,21],[4,5]] == [[4,5],[21,12]]'  ) { GameOfLife.new([12,21],[4,5]).should  ==  GameOfLife.new([4,5],[12,21]) }
-    before { @a , @b = GameOfLife.new , GameOfLife.new }
-    specify 'w10 == w10' do
-      @a.width = @b.width = 10
-      @a.should == @b
+    describe 'set based equality' do
+      specify('[] == []'                            ) { GameOfLife.new.should                 ==  GameOfLife.new                }
+      specify('[] != [[1,1]]'                       ) { GameOfLife.new.should_not             ==  GameOfLife.new([1,1])         }
+      specify('[[12,21]] == [[12,21]]'              ) { GameOfLife.new([12,21]).should        ==  GameOfLife.new([12,21])       }
+      specify('[[12,21]] != [[21,12]]'              ) { GameOfLife.new([12,21]).should_not    ==  GameOfLife.new([21,12])       }
+      specify('[[12,21],[4,5]] == [[4,5],[21,12]]'  ) { GameOfLife.new([12,21],[4,5]).should  ==  GameOfLife.new([4,5],[12,21]) }
     end
-    specify 'w10 != w20' do
-      @a.width = 2 * (@b.width = 10)
-      @b.should_not == @a
+    describe 'dimension based equality' do
+      before { @a , @b = GameOfLife.new , GameOfLife.new }
+      specify 'w10 == w10' do
+        @a.width = @b.width = 10
+        @a.should == @b
+      end
+      specify 'w10 != w20' do
+        @a.width = 2 * (@b.width = 10)
+        @b.should_not == @a
+      end
+      specify 'h111 == h111' do
+        @a.height = @b.height = 111
+        @a.should == @b
+      end
+      specify 'h111 != h222' do
+        @a.height = 2 * (@b.height = 111)
+        @b.should_not == @a
+      end
     end
-    specify 'h111 == h111' do
-      @a.height = @b.height = 111
-      @a.should == @b
-    end
-    specify 'h111 != h222' do
-      @a.height = 2 * (@b.height = 111)
-      @b.should_not == @a
+    describe 'set and dimensions' do
+      specify '[1,1]10x5 == [1,1]10x5'
+      specify '[1,1]10x5 != [1,1]10x4'
+      specify '[1,1]10x5 != [1,1]11x5'
+      specify '[1,1]10x5 != [1,2]10x5'
     end
   end
 
