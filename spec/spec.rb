@@ -147,10 +147,31 @@ describe GameOfLife do
       end
     end
     describe 'set and dimensions' do
-      specify '[1,1]10x5 == [1,1]10x5'
-      specify '[1,1]10x5 != [1,1]10x4'
-      specify '[1,1]10x5 != [1,1]11x5'
-      specify '[1,1]10x5 != [1,2]10x5'
+      subject { g=GameOfLife.new([1,1]); g.width=10; g.height=5; g }
+      specify '[1,1]10x5 == [1,1]10x5' do
+        g = GameOfLife.new [1,1]
+        g.width = 10
+        g.height = 5
+        should == g
+      end
+      specify '[1,1]10x5 != [1,1]10x4' do
+        g = GameOfLife.new [1,1]
+        g.width = 10
+        g.height = 4
+        should_not == g
+      end
+      specify '[1,1]10x5 != [1,1]11x5' do
+        g = GameOfLife.new [1,1]
+        g.width = 11
+        g.height = 5
+        should_not == g
+      end
+      specify '[1,1]10x5 != [1,2]10x5' do
+        g = GameOfLife.new [1,2]
+        g.width = 10
+        g.height = 5
+        should_not == g
+      end
     end
   end
 
