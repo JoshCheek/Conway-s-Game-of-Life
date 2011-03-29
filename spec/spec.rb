@@ -120,8 +120,11 @@ describe GameOfLife do
   end
   
   describe '#==' do
-    specify { GameOfLife.new.should == GameOfLife.new }
-    specify { GameOfLife.new.should_not == GameOfLife.new([1,1]) }
+    specify('[] == []'                            ) { GameOfLife.new.should                 ==  GameOfLife.new                }
+    specify('[] != [[1,1]]'                       ) { GameOfLife.new.should_not             ==  GameOfLife.new([1,1])         }
+    specify('[[12,21]] == [[12,21]]'              ) { GameOfLife.new([12,21]).should        ==  GameOfLife.new([12,21])       }
+    specify('[[12,21]] != [[21,12]]'              ) { GameOfLife.new([12,21]).should_not    ==  GameOfLife.new([21,12])       }
+    specify('[[12,21],[4,5]] == [[4,5],[21,12]]'  ) { GameOfLife.new([12,21],[4,5]).should  ==  GameOfLife.new([4,5],[12,21]) }
   end
 
 end
