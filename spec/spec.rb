@@ -134,6 +134,14 @@ describe GameOfLife do
       @a.width = 2 * (@b.width = 10)
       @b.should_not == @a
     end
+    specify 'h111 == h111' do
+      @a.height = @b.height = 111
+      @a.should == @b
+    end
+    specify 'h111 != h222' do
+      @a.height = 2 * (@b.height = 111)
+      @b.should_not == @a
+    end
   end
 
 end
