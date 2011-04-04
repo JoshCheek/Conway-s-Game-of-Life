@@ -4,7 +4,7 @@
 
 # ==========  CHECK COMMAND LINE ARGS  ==========
 def usage
-  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate] [image_dir] [map]"
+  puts "usage: game_of_life [seed] [dimensions] [side_length] [offset] [rate] [image_dir] [map] [suppress]"
   puts "where:"
   puts "  seed is -seed=[x1,y1],[x2,y2],...,[xn,yn]"
   puts "    and upper left is [0,0]"
@@ -25,6 +25,11 @@ def usage
   puts "    this way you don't have to convert to the coordinate system"
   puts "    period represents dead cells, anything else represents live cells"
   puts "    note: if invoking by hand, my system accepts Ctrl-D twice as EOF"
+  puts "  suppress is -suppress=video or -suppress=animation"
+  puts "    if you aren't interested in getting a video rather than observing the output"
+  puts "      then you may wish to -suppress=animation"
+  puts "    if you are only interested in observing the output, and not in generating a video"
+  puts "      then you may wish to -suppress=video"
   puts "Output will be displayed on terminal."
   puts "Send interrupt once when you are satisfied."
   puts "It will generate the file ./life.mp4"
@@ -34,6 +39,12 @@ end
 if $h
   usage
   exit
+end
+
+# validate $suppress
+if $suppress && !%w(video animation).find { |option| $suppress == option }
+  $stderr.puts "invalid value for suppression, please select from 'video' or 'animation'"
+  exit 1
 end
 
 
@@ -131,7 +142,9 @@ end
 
 # turn the results into a movie 
 at_exit do
-  system %Q(ffmpeg -r #{$rate||16} -f image2 -i "#{dirname}/%05d.gif" -b 600k ./life.mp4)
+  if $suppress != "video"
+    system %Q(ffmpeg -r #{$rate||16} -f image2 -i "#{dirname}/%05d.gif" -b 600k ./life.mp4)
+  end
 end
 
 # some games never end, so user will have to interrupt them
@@ -139,12 +152,16 @@ end
 Signal.trap("INT") { exit }
 
 # draw each image
-system 'clear'
+system 'clear' unless $suppress == "animation"
 infinity = 1 / 0.0
 0.upto infinity do |index|
-  print "\e[0;0H"
-  puts board.to_a.map { |row| row.map { |element| element ? 'X' : ' ' }.join }.join("\n")
-  filename = File.join dirname , '%05d.gif'%index
-  make_image board , filename , $side_length
+  if $suppress != "animation"
+    print "\e[0;0H"
+    puts board.to_a.map { |row| row.map { |element| element ? 'X' : ' ' }.join }.join("\n")
+  end
+  if $suppress != "video"
+    filename = File.join dirname , '%05d.gif'%index
+    make_image board , filename , $side_length
+  end
   board.tick!
 end
